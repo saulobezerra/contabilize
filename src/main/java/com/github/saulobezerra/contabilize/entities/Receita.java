@@ -24,24 +24,36 @@ public class Receita implements Serializable{
 	private String observacao;
 	private Double qtdeProduto;
 	
-	//private Usuario usuario;
 	@ManyToOne
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
+	
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 	
 	public Receita() {
 		
 	}
 
-	public Receita(Long id, String nomeCliente, Double valor, Boolean isPago, String observacao, Produto produto, Double qtdeProduto) {
+	public Receita(Long id, String nomeCliente, Boolean isPago, String observacao, Produto produto, Double qtdeProduto, Usuario usuario) {
 		super();
 		this.id = id;
 		this.nomeCliente = nomeCliente;
-		this.valor = valor;
 		this.isPago = isPago;
 		this.observacao = observacao;
 		this.produto = produto;
 		this.qtdeProduto = qtdeProduto;
+		this.usuario = usuario;
+		this.valor = qtdeProduto * produto.getValor();
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Double getQtdeProduto() {

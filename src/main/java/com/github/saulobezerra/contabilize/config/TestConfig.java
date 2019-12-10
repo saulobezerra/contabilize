@@ -37,8 +37,8 @@ public class TestConfig implements CommandLineRunner{
 		Produto p2 = new Produto(null, "Bolo baeta", 10.00);
 		produtoRepository.saveAll(Arrays.asList(p1, p2));
 		
-		Receita r1 = new Receita(null, "Severino", 1.0*p1.getValor(), true, "", p1, 1.0);
-		Receita r2 = new Receita(null, "Severino", 2.0*p2.getValor(), true, "", p2, 2.0);
+		Receita r1 = new Receita(null, "Severino", true, "", p1, 1.0, u1);
+		Receita r2 = new Receita(null, "Severino", true, "", p2, 2.0, u1);
 		receitaRepository.saveAll(Arrays.asList(r1, r2));
 		
 	}
