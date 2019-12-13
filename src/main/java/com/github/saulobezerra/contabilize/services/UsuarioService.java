@@ -23,4 +23,41 @@ public class UsuarioService {
 		Optional<Usuario> obj = repository.findById(id);
 		return obj.get();
 	}
+
+	public Usuario insert(Usuario obj) {
+		// TODO: Fazer validações dos atributos
+		return repository.save(obj);
+	}
+
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+
+	public Usuario update(Long id, Usuario obj) {
+		Usuario usuario = repository.getOne(id);
+		updateData(usuario, obj);
+		return repository.save(usuario);
+	}
+
+	private void updateData(Usuario usuario, Usuario obj) {
+		usuario.setEmail(obj.getEmail()); // TODO: Verificar se ja existe e-mail cadastrado
+		usuario.setNome(obj.getNome()); 
+		usuario.setUserName(obj.getUserName()); // TODO: Verificar se ja existe o userName cadastrado
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
