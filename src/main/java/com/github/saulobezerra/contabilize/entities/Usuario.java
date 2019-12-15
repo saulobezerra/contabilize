@@ -28,6 +28,10 @@ public class Usuario implements Serializable{
 	@OneToMany(mappedBy = "usuario")
 	private List<Receita> receitas = new ArrayList<>();
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario")
+	private List<Despesa> despesas = new ArrayList<>();
+	
 	public Usuario() {
 		
 	}
@@ -39,6 +43,10 @@ public class Usuario implements Serializable{
 		this.email = email;
 		this.userName = userName;
 		this.senha = senha;
+	}
+	
+	public List<Despesa> getDespesas() {
+		return despesas;
 	}
 
 	public List<Receita> getReceitas() {

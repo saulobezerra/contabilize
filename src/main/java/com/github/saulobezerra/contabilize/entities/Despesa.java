@@ -19,29 +19,52 @@ public class Despesa implements Serializable{
 	private Long id;
 	private Double qtde_insumo;
 	private Double valor;
+	private Double valorUnitario;
 	private String local;
-	private String observacao;
-	private Date data;
+	private String descricao;
+	private Date data = new Date();
 
 	@ManyToOne
 	@JoinColumn(name = "tipo_id")
 	private TipoDespesa tipo;
 	
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
+	
 	public Despesa() {
 		
 	}
 
-	public Despesa(Long id, Double qtde_insumo, String local, String observacao, Double valor, TipoDespesa tipo) {
+	public Despesa(Long id, TipoDespesa tipo, String descricao, Double qtde_insumo, Double valorUnitario, String local, Usuario usuario) {
 		super();
 		this.id = id;
 		this.qtde_insumo = qtde_insumo;
-		this.valor = valor;
+		this.valorUnitario = valorUnitario;
+		this.valor = qtde_insumo * valorUnitario;
 		this.local = local;
-		this.observacao = observacao;
+		this.descricao = descricao;
 		this.tipo = tipo;
+		this.usuario = usuario;
 		this.data = new Date();
 	}
 	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Double getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(Double valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+
 	public TipoDespesa getTipo() {
 		return tipo;
 	}
@@ -54,61 +77,49 @@ public class Despesa implements Serializable{
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public Double getQtde_insumo() {
 		return qtde_insumo;
 	}
 
-
 	public void setQtde_insumo(Double qtde_insumo) {
 		this.qtde_insumo = qtde_insumo;
 	}
-
 
 	public Double getValor() {
 		return valor;
 	}
 
-
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
 
 	public String getLocal() {
 		return local;
 	}
 
-
 	public void setLocal(String local) {
 		this.local = local;
 	}
 
-
-	public String getObservacao() {
-		return observacao;
+	public String getDescricao() {
+		return descricao;
 	}
 
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
-
 
 	public Date getData() {
 		return data;
 	}
 
-
 	public void setData(Date data) {
 		this.data = data;
 	}
-
 
 	@Override
 	public int hashCode() {

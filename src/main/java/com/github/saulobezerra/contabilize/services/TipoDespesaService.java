@@ -23,4 +23,22 @@ public class TipoDespesaService {
 		Optional<TipoDespesa> obj = repository.findById(id);
 		return obj.get();
 	}
+
+	public TipoDespesa insert(TipoDespesa obj) {
+		return repository.save(obj);
+	}
+
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+
+	public TipoDespesa update(Long id, TipoDespesa obj) {
+		TipoDespesa tipoDespesa = repository.getOne(id);
+		updateData(tipoDespesa, obj);
+		return repository.save(tipoDespesa);
+	}
+
+	private void updateData(TipoDespesa tipoDespesa, TipoDespesa obj) {
+		tipoDespesa.setDescricao(obj.getDescricao());
+	}
 }
