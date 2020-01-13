@@ -45,6 +45,11 @@ public class UsuarioService {
 		usuario.setUserName(obj.getUserName()); // TODO: Verificar se ja existe o userName cadastrado
 		
 	}
+
+	public Usuario findByEmailUserName(String emailUserName) {
+		
+		return repository.findByEmailUserName(emailUserName);
+	}
 }
 
 
