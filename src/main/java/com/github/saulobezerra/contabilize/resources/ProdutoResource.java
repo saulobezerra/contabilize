@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,12 +32,14 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Produto> findById(@PathVariable Long id) {
 		Produto obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<Produto> insert(@RequestBody Produto obj) {
 		obj = service.insert(obj);
@@ -45,16 +48,25 @@ public class ProdutoResource {
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
+	@CrossOrigin
 	@DeleteMapping
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto obj) {
 		obj = service.update(id, obj);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@CrossOrigin
+	@GetMapping(value = "/usuario/{idUsuario}")
+	public ResponseEntity<List<Produto>> findByUser(@PathVariable Long idUsuario) {
+		List<Produto> list = service.findByUser(idUsuario);
+		return ResponseEntity.ok().body(list);
 	}
 	
 }

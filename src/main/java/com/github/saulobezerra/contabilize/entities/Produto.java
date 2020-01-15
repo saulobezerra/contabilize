@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,15 +30,28 @@ public class Produto implements Serializable {
 	@OneToMany(mappedBy = "produto")
 	private List<Receita> receitas = new ArrayList<>();
 	
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
+	
 	public Produto() {
 		
 	}
 
-	public Produto(Long id, String nome, Double valor) {
+	public Produto(Long id, String nome, Double valor, Usuario usuario) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.valor = valor;
+		this.usuario = usuario;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Long getId() {

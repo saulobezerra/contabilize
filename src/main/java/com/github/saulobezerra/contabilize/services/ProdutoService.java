@@ -42,4 +42,8 @@ public class ProdutoService {
 		prod.setNome(obj.getNome());
 		prod.setValor(obj.getValor());
 	}
+	
+	public List<Produto> findByUser(Long idUser) {
+		return repository.findByUser(idUser);
+	}
 }

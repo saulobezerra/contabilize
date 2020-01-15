@@ -40,14 +40,14 @@ public class TestConfig implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Usuario u1 = new Usuario(null, "saulo", "saulo@email", "sauloalves", "123456");
+		Usuario u1 = new Usuario(null, "saulo", "saulo@email", "sauloalves", "MTIzNDU2");
 		usuarioRepository.saveAll(Arrays.asList(u1));
 		
 		Usuario u2 = new Usuario(null, "dayana ", "dayana@email", "dayanamoura", "123456");
 		usuarioRepository.saveAll(Arrays.asList(u2));
 		
-		Produto p1 = new Produto(null, "Bolo fofo", 8.00);
-		Produto p2 = new Produto(null, "Bolo baeta", 10.00);
+		Produto p1 = new Produto(null, "Bolo fofo", 8.00, u1);
+		Produto p2 = new Produto(null, "Bolo baeta", 10.00, u1);
 		produtoRepository.saveAll(Arrays.asList(p1, p2));
 		
 		Receita r1 = new Receita(null, "Severino", true, "", p1, 1.0, u1);
