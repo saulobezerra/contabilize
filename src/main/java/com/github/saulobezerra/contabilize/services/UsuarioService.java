@@ -21,6 +21,10 @@ public class UsuarioService {
 	
 	public Usuario findById(Long id) {
 		Optional<Usuario> obj = repository.findById(id);
+		if(obj.isEmpty()) {
+			throw new RuntimeException("Usuario não encontrado");
+		}
+		
 		return obj.get();
 	}
 
@@ -43,11 +47,9 @@ public class UsuarioService {
 		usuario.setEmail(obj.getEmail()); // TODO: Verificar se ja existe e-mail cadastrado
 		usuario.setNome(obj.getNome()); 
 		usuario.setUserName(obj.getUserName()); // TODO: Verificar se ja existe o userName cadastrado
-		
 	}
 
 	public Usuario findByEmailUserName(String emailUserName) {
-		
 		return repository.findByEmailUserName(emailUserName);
 	}
 }

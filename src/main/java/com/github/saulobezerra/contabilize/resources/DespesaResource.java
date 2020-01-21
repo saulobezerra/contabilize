@@ -2,6 +2,7 @@ package com.github.saulobezerra.contabilize.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.github.saulobezerra.contabilize.entities.Despesa;
+import com.github.saulobezerra.contabilize.entities.dtos.DespesaDTO;
 import com.github.saulobezerra.contabilize.services.DespesaService;
 
 @RestController
@@ -26,50 +28,45 @@ public class DespesaResource {
 	private DespesaService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Despesa>> findAll(){
+	public ResponseEntity<List<DespesaDTO>> findAll(){
 		List<Despesa> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/usuario/{idUsuario}")
-	public ResponseEntity<List<Despesa>> findByUser(@PathVariable Long idUsuario) {
+	public ResponseEntity<List<DespesaDTO>> findByUser(@PathVariable Long idUsuario) {
 		List<Despesa> list = service.findByUser(idUsuario);
-		return ResponseEntity.ok().body(list);
+		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Despesa> findById(@PathVariable Long id) {
+	public ResponseEntity<DespesaDTO> findById(@PathVariable Long id) {
 		Despesa obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		DespesaDTO despesaDto = new DespesaDTO(obj);
+		return ResponseEntity.ok().body(despesaDto);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Despesa> insert(@RequestBody Despesa obj) {
+	public ResponseEntity<DespesaDTO> insert(@RequestBody Despesa obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
 				buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+		DespesaDTO despesaDto = new DespesaDTO(obj);
+		return ResponseEntity.created(uri).body(despesaDto);
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Despesa> update(@PathVariable Long id, @RequestBody Despesa obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<DespesaDTO> update(@PathVariable Long id, @RequestBody DespesaDTO objDto) {
+		Despesa despesa = service.update(id, objDto);
+		DespesaDTO despesaDto = new DespesaDTO(despesa);
+		return ResponseEntity.ok().body(despesaDto);
 	}
 }
-
-
-
-
-
-
-
-
-
-

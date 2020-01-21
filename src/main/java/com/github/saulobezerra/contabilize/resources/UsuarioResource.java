@@ -2,6 +2,7 @@ package com.github.saulobezerra.contabilize.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.github.saulobezerra.contabilize.entities.Usuario;
+import com.github.saulobezerra.contabilize.entities.dtos.UsuarioDTO;
 import com.github.saulobezerra.contabilize.services.UsuarioService;
 
 @RestController
@@ -28,7 +30,7 @@ public class UsuarioResource {
 	
 	@CrossOrigin
 	@GetMapping (value = "login/{emailOuUserName}/{senha}")
-	public ResponseEntity<Usuario> findByUser(@PathVariable String emailOuUserName, @PathVariable String senha) throws Exception {
+	public ResponseEntity<UsuarioDTO> findByUser(@PathVariable String emailOuUserName, @PathVariable String senha) throws Exception {
 		Usuario obj = service.findByEmailUserName(emailOuUserName);
 		if(obj == null) {
 			throw new Exception("Usuário não encontrado");
@@ -36,24 +38,27 @@ public class UsuarioResource {
 		if (!obj.getSenha().equals(senha)) {
 			throw new Exception("Erro na autenticação");
 		}
-		return ResponseEntity.ok().body(obj);
+		UsuarioDTO userDto = new UsuarioDTO(obj);
+		return ResponseEntity.ok().body(userDto);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Usuario>> findAll(){
+	public ResponseEntity<List<UsuarioDTO>> findAll(){
 		List<Usuario> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<UsuarioDTO> listDto = list.stream().map(usuario -> new UsuarioDTO(usuario)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Usuario> findById(@PathVariable Long id) {
+	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
 		Usuario obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		UsuarioDTO userDto = new UsuarioDTO(obj);
+		return ResponseEntity.ok().body(userDto);
 	}
 	
 	@CrossOrigin
 	@PostMapping
-	public ResponseEntity<Usuario> insert(@RequestBody Usuario obj) throws Exception {
+	public ResponseEntity<UsuarioDTO> insert(@RequestBody Usuario obj) throws Exception {
 		
 		Usuario user = service.findByEmailUserName(obj.getEmail());
 		if(user != null) {
@@ -68,7 +73,8 @@ public class UsuarioResource {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
 				buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+		UsuarioDTO userDto = new UsuarioDTO(obj);
+		return ResponseEntity.created(uri).body(userDto);
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -78,9 +84,10 @@ public class UsuarioResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario obj) {
+	public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody Usuario obj) {
 		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+		UsuarioDTO userDto = new UsuarioDTO(obj);
+		return ResponseEntity.ok().body(userDto);
 	}
 }
 

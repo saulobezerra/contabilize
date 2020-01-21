@@ -18,7 +18,7 @@ public class Receita implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nomeCliente;
-	private Date dataReceita = new Date();
+	private Date dataReceita;
 	private Double valor;
 	private Boolean isPago;
 	private String observacao;
@@ -27,7 +27,7 @@ public class Receita implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
@@ -40,6 +40,7 @@ public class Receita implements Serializable{
 		super();
 		this.id = id;
 		this.nomeCliente = nomeCliente;
+		this.dataReceita = new Date();
 		this.isPago = isPago;
 		this.observacao = observacao;
 		this.produto = produto;

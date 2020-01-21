@@ -1,5 +1,6 @@
 package com.github.saulobezerra.contabilize.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,15 +36,28 @@ public class ReceitaService {
 	
 	public Receita findById(Long id) {
 		Optional<Receita> obj = repository.findById(id);
+		if(obj.isEmpty()) {
+			throw new RuntimeException("Receita não encontrado");
+		}
+		
 		return obj.get();
 	}
 
 	public Receita insert(Receita obj) {
 		// TODO: Colocar validações
 		Optional<Produto> prod = produtoRepository.findById(obj.getProduto().getId());
-		Optional<Usuario> usuario = usuarioRepository.findById(obj.getUsuario().getId());;
+		Optional<Usuario> usuario = usuarioRepository.findById(obj.getUsuario().getId());
+		
+		if(usuario.isEmpty()) {
+			throw new RuntimeException("Usuário não encontrado");
+		}
+		if(prod.isEmpty()) {
+			throw new RuntimeException("Produto não encontrado");
+		}
+		
 		obj.setProduto(prod.get());
 		obj.setUsuario(usuario.get());
+		obj.setDataReceita(new Date());
 		obj.setValor(obj.getQtdeProduto() * obj.getProduto().getValor());
 		return repository.save(obj);
 	}
@@ -59,12 +73,17 @@ public class ReceitaService {
 	}
 
 	private void update(Receita receita, Receita obj) {
+		Optional<Produto> prod = produtoRepository.findById(obj.getProduto().getId());
+		
+		if(prod.isEmpty()) {
+			throw new RuntimeException("Produto não encontrado");
+		}
+		
 		receita.setNomeCliente(obj.getNomeCliente());
 		receita.setObservacao(obj.getObservacao());
-		Produto prod = produtoRepository.findById(obj.getProduto().getId()).get();
-		receita.setProduto(prod);
+		receita.setProduto(prod.get());
 		receita.setQtdeProduto(obj.getQtdeProduto());
-		receita.setValor(obj.getQtdeProduto() * prod.getValor());
+		receita.setValor(obj.getQtdeProduto() * prod.get().getValor());
 		receita.setDataReceita(obj.getDataReceita());
 		receita.setIsPago(obj.getIsPago());
 	}

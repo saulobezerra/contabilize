@@ -2,6 +2,7 @@ package com.github.saulobezerra.contabilize.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.github.saulobezerra.contabilize.entities.Receita;
+import com.github.saulobezerra.contabilize.entities.dtos.ReceitaDTO;
 import com.github.saulobezerra.contabilize.services.ReceitaService;
 
 @RestController
@@ -26,40 +28,45 @@ public class ReceitaResource {
 	private ReceitaService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Receita>> findAll(){
+	public ResponseEntity<List<ReceitaDTO>> findAll(){
 		List<Receita> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/usuario/{idUsuario}")
-	public ResponseEntity<List<Receita>> findByUser(@PathVariable Long idUsuario) {
+	public ResponseEntity<List<ReceitaDTO>> findByUser(@PathVariable Long idUsuario) {
 		List<Receita> list = service.findByUser(idUsuario);
-		return ResponseEntity.ok().body(list);
+		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Receita> findById(@PathVariable Long id) {
+	public ResponseEntity<ReceitaDTO> findById(@PathVariable Long id) {
 		Receita obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		ReceitaDTO receitaDto = new ReceitaDTO(obj);
+		return ResponseEntity.ok().body(receitaDto);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Receita> insert(@RequestBody Receita obj) {
+	public ResponseEntity<ReceitaDTO> insert(@RequestBody Receita obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
 				buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+		ReceitaDTO receitaDto = new ReceitaDTO(obj);
+		return ResponseEntity.created(uri).body(receitaDto);
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Receita> update(@PathVariable Long id, @RequestBody Receita obj) {
+	public ResponseEntity<ReceitaDTO> update(@PathVariable Long id, @RequestBody Receita obj) {
 		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+		ReceitaDTO receitaDto = new ReceitaDTO(obj);
+		return ResponseEntity.ok().body(receitaDto);
 	}
 }

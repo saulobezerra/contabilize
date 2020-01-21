@@ -22,7 +22,7 @@ public class Despesa implements Serializable{
 	private Double valorUnitario;
 	private String local;
 	private String descricao;
-	private Date data = new Date();
+	private Date data;
 
 	@ManyToOne
 	@JoinColumn(name = "tipo_id")

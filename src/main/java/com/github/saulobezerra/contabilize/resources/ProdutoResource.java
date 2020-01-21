@@ -2,6 +2,7 @@ package com.github.saulobezerra.contabilize.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.github.saulobezerra.contabilize.entities.Produto;
+import com.github.saulobezerra.contabilize.entities.dtos.ProdutoDTO;
 import com.github.saulobezerra.contabilize.services.ProdutoService;
 
 @RestController
@@ -27,29 +29,32 @@ public class ProdutoResource {
 	private ProdutoService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Produto>> findAll(){
+	public ResponseEntity<List<ProdutoDTO>> findAll(){
 		List<Produto> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<ProdutoDTO> listDtp = list.stream().map(prod -> new ProdutoDTO(prod)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDtp);
 	}
 	
 	@CrossOrigin
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Produto> findById(@PathVariable Long id) {
+	public ResponseEntity<ProdutoDTO> findById(@PathVariable Long id) {
 		Produto obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		ProdutoDTO prodDto = new ProdutoDTO(obj);
+		return ResponseEntity.ok().body(prodDto);
 	}
 	
 	@CrossOrigin
 	@PostMapping
-	public ResponseEntity<Produto> insert(@RequestBody Produto obj) {
+	public ResponseEntity<ProdutoDTO> insert(@RequestBody Produto obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
 				buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+		ProdutoDTO prodDto = new ProdutoDTO(obj);
+		return ResponseEntity.created(uri).body(prodDto);
 	}
 	
 	@CrossOrigin
-	@DeleteMapping
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
@@ -57,16 +62,18 @@ public class ProdutoResource {
 	
 	@CrossOrigin
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto obj) {
-		obj = service.update(id, obj);
+	public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @RequestBody ProdutoDTO obj) {
+		Produto prod = service.update(id, obj);
+		obj = new ProdutoDTO(prod);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@CrossOrigin
 	@GetMapping(value = "/usuario/{idUsuario}")
-	public ResponseEntity<List<Produto>> findByUser(@PathVariable Long idUsuario) {
+	public ResponseEntity<List<ProdutoDTO>> findByUser(@PathVariable Long idUsuario) {
 		List<Produto> list = service.findByUser(idUsuario);
-		return ResponseEntity.ok().body(list);
+		List<ProdutoDTO> listDtp = list.stream().map(prod -> new ProdutoDTO(prod)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDtp);
 	}
 	
 }
