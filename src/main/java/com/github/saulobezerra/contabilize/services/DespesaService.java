@@ -59,7 +59,12 @@ public class DespesaService {
 		obj.setTipo(tipoDespesa.get());
 		obj.setUsuario(usuario.get());
 		
-		obj.setData(new Date());
+		if(obj.getData() == null) {
+			obj.setData(new Date());
+		}else {			
+			obj.setData(obj.getData());
+		}
+		
 		obj.setValor(obj.getQtde_insumo() * obj.getValorUnitario());
 		return repository.save(obj);
 	}

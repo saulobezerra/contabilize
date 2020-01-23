@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@CrossOrigin
 	@GetMapping(value = "/usuario/{idUsuario}")
 	public ResponseEntity<List<DespesaDTO>> findByUser(@PathVariable Long idUsuario) {
 		List<Despesa> list = service.findByUser(idUsuario);
@@ -41,6 +43,7 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<DespesaDTO> findById(@PathVariable Long id) {
 		Despesa obj = service.findById(id);
@@ -48,6 +51,7 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(despesaDto);
 	}
 	
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<DespesaDTO> insert(@RequestBody Despesa obj) {
 		obj = service.insert(obj);
@@ -57,12 +61,14 @@ public class DespesaResource {
 		return ResponseEntity.created(uri).body(despesaDto);
 	}
 	
+	@CrossOrigin
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<DespesaDTO> update(@PathVariable Long id, @RequestBody DespesaDTO objDto) {
 		Despesa despesa = service.update(id, objDto);
