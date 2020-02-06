@@ -1,16 +1,16 @@
 package com.github.saulobezerra.contabilize.entities.dtos;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.github.saulobezerra.contabilize.entities.Receita;
+import com.github.saulobezerra.contabilize.util.Funcao;
 
 public class ReceitaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
 	private String nomeCliente;
-	private Date dataReceita = new Date();
+	private String dataReceita;
 	private Double valor;
 	private Boolean isPago;
 	private String observacao;
@@ -26,7 +26,7 @@ public class ReceitaDTO implements Serializable {
 		super();
 		this.id = receita.getId();
 		this.nomeCliente = receita.getNomeCliente();
-		this.dataReceita = receita.getDataReceita();
+		this.dataReceita = Funcao.formataDataDDMMYYYY(receita.getDataReceita());
 		this.valor = receita.getValor();
 		this.isPago = receita.getIsPago();
 		this.observacao = receita.getObservacao();
@@ -50,11 +50,11 @@ public class ReceitaDTO implements Serializable {
 		this.nomeCliente = nomeCliente;
 	}
 
-	public Date getDataReceita() {
+	public String getDataReceita() {
 		return dataReceita;
 	}
 
-	public void setDataReceita(Date dataReceita) {
+	public void setDataReceita(String dataReceita) {
 		this.dataReceita = dataReceita;
 	}
 

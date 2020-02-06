@@ -1,6 +1,5 @@
 package com.github.saulobezerra.contabilize.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +56,6 @@ public class ReceitaService {
 		
 		obj.setProduto(prod.get());
 		obj.setUsuario(usuario.get());
-		obj.setDataReceita(new Date());
 		obj.setValor(obj.getQtdeProduto() * obj.getProduto().getValor());
 		return repository.save(obj);
 	}

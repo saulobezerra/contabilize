@@ -1,10 +1,10 @@
 package com.github.saulobezerra.contabilize.entities.dtos;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.github.saulobezerra.contabilize.entities.Despesa;
 import com.github.saulobezerra.contabilize.entities.TipoDespesa;
+import com.github.saulobezerra.contabilize.util.Funcao;
 
 public class DespesaDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -15,7 +15,7 @@ public class DespesaDTO implements Serializable{
 	private Double valorUnitario;
 	private String local;
 	private String descricao;
-	private Date data;
+	private String data;
 	
 	private TipoDespesa tipo;
 	
@@ -31,7 +31,7 @@ public class DespesaDTO implements Serializable{
 		this.valorUnitario = despesa.getValorUnitario();
 		this.local = despesa.getLocal();
 		this.descricao = despesa.getDescricao();
-		this.data = despesa.getData();
+		this.data = Funcao.formataDataDDMMYYYY(despesa.getData());
 		this.tipo = despesa.getTipo();
 	}
 
@@ -83,11 +83,11 @@ public class DespesaDTO implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
@@ -97,10 +97,6 @@ public class DespesaDTO implements Serializable{
 
 	public void setTipo(TipoDespesa tipo) {
 		this.tipo = tipo;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 	
 }
