@@ -36,9 +36,17 @@ public class ReceitaResource {
 	}
 	
 	@CrossOrigin
-	@GetMapping(value = "/usuario/{idUsuario}")
+	@GetMapping(value = "/all/usuario/{idUsuario}")
 	public ResponseEntity<List<ReceitaDTO>> findByUser(@PathVariable Long idUsuario) {
 		List<Receita> list = service.findByUser(idUsuario);
+		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@CrossOrigin
+	@GetMapping(value = "/usuario/{idUsuario}")
+	public ResponseEntity<List<ReceitaDTO>> findByUserAndCurrentMonth(@PathVariable Long idUsuario) {
+		List<Receita> list = service.findByUserAndCurrentMonth(idUsuario);
 		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
@@ -74,5 +82,13 @@ public class ReceitaResource {
 		obj = service.update(id, obj);
 		ReceitaDTO receitaDto = new ReceitaDTO(obj);
 		return ResponseEntity.ok().body(receitaDto);
+	}
+	
+	@CrossOrigin
+	@GetMapping(value = "{idUsuario}/{mes}/{ano}")
+	public ResponseEntity<List<ReceitaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
+		List<Receita> list = service.findByMesAno(idUsuario, mes, ano);
+		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 }

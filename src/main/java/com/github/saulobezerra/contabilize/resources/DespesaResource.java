@@ -36,9 +36,17 @@ public class DespesaResource {
 	}
 	
 	@CrossOrigin
-	@GetMapping(value = "/usuario/{idUsuario}")
+	@GetMapping(value = "all/usuario/{idUsuario}")
 	public ResponseEntity<List<DespesaDTO>> findByUser(@PathVariable Long idUsuario) {
 		List<Despesa> list = service.findByUser(idUsuario);
+		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@CrossOrigin
+	@GetMapping(value = "/usuario/{idUsuario}")
+	public ResponseEntity<List<DespesaDTO>> findByUserAndCurrentMonth(@PathVariable Long idUsuario) {
+		List<Despesa> list = service.findByUserAndCurrentMonth(idUsuario);
 		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
@@ -74,5 +82,13 @@ public class DespesaResource {
 		Despesa despesa = service.update(id, objDto);
 		DespesaDTO despesaDto = new DespesaDTO(despesa);
 		return ResponseEntity.ok().body(despesaDto);
+	}
+	
+	@CrossOrigin
+	@GetMapping(value = "{idUsuario}/{mes}/{ano}")
+	public ResponseEntity<List<DespesaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
+		List<Despesa> list = service.findByMesAno(idUsuario, mes, ano);
+		List<DespesaDTO> listDto = list.stream().map(receita -> new DespesaDTO(receita)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 }

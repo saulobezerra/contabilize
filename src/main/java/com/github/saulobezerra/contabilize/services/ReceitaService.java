@@ -85,4 +85,12 @@ public class ReceitaService {
 		receita.setDataReceita(obj.getDataReceita());
 		receita.setIsPago(obj.getIsPago());
 	}
+
+	public List<Receita> findByUserAndCurrentMonth(Long idUsuario) {
+		return repository.findByUserAndCurrentMonth(idUsuario);
+	}
+	
+	public List<Receita> findByMesAno(Long idUsuario, int mes, int ano) {
+		return repository.findByMesAno(idUsuario, mes, ano);
+	}
 }

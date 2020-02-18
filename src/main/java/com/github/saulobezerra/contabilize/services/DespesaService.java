@@ -95,4 +95,12 @@ public class DespesaService {
 		despesa.setValorUnitario(obj.getValorUnitario());
 		despesa.setValor(obj.getQtde_insumo() * obj.getValorUnitario());
 	}
+
+	public List<Despesa> findByUserAndCurrentMonth(Long idUsuario) {
+		return repository.findByUserAndCurrentMonth(idUsuario);
+	}
+	
+	public List<Despesa> findByMesAno(Long idUsuario, int mes, int ano) {
+		return repository.findByMesAno(idUsuario, mes, ano);
+	}
 }
