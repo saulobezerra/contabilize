@@ -28,17 +28,27 @@ public class LucroService {
     	return this.ano;
     }
     
-	public LucroDTO lucroAtual(Long id) {
+	public LucroDTO lucroAtualByMonthYear(Long id, int mes, int ano) {
 		
-		Double totalReceita = repository.totalReceita(id);
-		Double totalDespesa = repository.totalDespesa(id);
+		Double totalDespesa = repository.totalDespesaByMes(id, mes, ano);
+		Double totalReceita = repository.totalReceitaByMes(id, mes, ano);
+		
+		LucroDTO lucro = new LucroDTO(getMes(), getAno(), totalReceita, totalDespesa); // 0 -> Mes atual
+		
+		return lucro;
+	}
+	
+	public LucroDTO lucroAtualByYear(Long id, int ano) {
+		
+		Double totalDespesa = repository.totalDespesaByAno(id, ano);
+		Double totalReceita = repository.totalReceitaByAno(id, ano);
 		
 		LucroDTO lucro = new LucroDTO(getMes(), getAno(), totalReceita, totalDespesa); // 0 -> Mes atual
 		
 		return lucro;
 	}
 
-	public List<LucroDTO> lucroThreeMonthAgo(Long id) {	
+	public List<LucroDTO> lucroDefault(Long id) {	
 		
 		int mes = getMes();
 		int ano = getAno();

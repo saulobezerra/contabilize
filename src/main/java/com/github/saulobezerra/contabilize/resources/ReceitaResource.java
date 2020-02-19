@@ -85,7 +85,7 @@ public class ReceitaResource {
 	}
 	
 	@CrossOrigin
-	@GetMapping(value = "{idUsuario}/{mes}/{ano}")
+	@GetMapping(value = "/usuario/{idUsuario}/mes_ano/{mes}/{ano}")
 	public ResponseEntity<List<ReceitaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
 		List<Receita> list = service.findByMesAno(idUsuario, mes, ano);
 		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());

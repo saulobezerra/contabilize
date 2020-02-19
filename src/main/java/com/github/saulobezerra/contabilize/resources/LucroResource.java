@@ -21,15 +21,21 @@ public class LucroResource {
 	private LucroService service;
 	
 	@CrossOrigin
-	@GetMapping(value = "/atual/{id}")
-	public ResponseEntity<LucroDTO> lucroAtual(@PathVariable Long id) {
-		return ResponseEntity.ok().body(service.lucroAtual(id));
+	@GetMapping(value = "/usuario/{id}/mes_ano/{mes}/{ano}")
+	public ResponseEntity<LucroDTO> lucroAtualByMonthYear(@PathVariable Long id, @PathVariable int mes, @PathVariable int ano) {
+		return ResponseEntity.ok().body(service.lucroAtualByMonthYear(id, mes, ano));
 	}
 	
 	@CrossOrigin
-	@GetMapping(value = "/default/{id}")
+	@GetMapping(value = "/usuario/{id}/ano/{ano}")
+	public ResponseEntity<LucroDTO> lucroAtualByYear(@PathVariable Long id, @PathVariable int mes, @PathVariable int ano) {
+		return ResponseEntity.ok().body(service.lucroAtualByYear(id, ano));
+	}
+	
+	@CrossOrigin
+	@GetMapping(value = "/usuario/{id}/default")
 	public ResponseEntity<List<LucroDTO>> lucroThreeMonthAgo(@PathVariable Long id) {
-		return ResponseEntity.ok().body(service.lucroThreeMonthAgo(id));
+		return ResponseEntity.ok().body(service.lucroDefault(id));
 	}
 	
 }
