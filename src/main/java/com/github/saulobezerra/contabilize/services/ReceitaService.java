@@ -35,7 +35,7 @@ public class ReceitaService {
 	
 	public Receita findById(Long id) {
 		Optional<Receita> obj = repository.findById(id);
-		if(obj.isEmpty()) {
+		if(!obj.isPresent()) {
 			throw new RuntimeException("Receita não encontrado");
 		}
 		
@@ -47,10 +47,10 @@ public class ReceitaService {
 		Optional<Produto> prod = produtoRepository.findById(obj.getProduto().getId());
 		Optional<Usuario> usuario = usuarioRepository.findById(obj.getUsuario().getId());
 		
-		if(usuario.isEmpty()) {
+		if(!usuario.isPresent()) {
 			throw new RuntimeException("Usuário não encontrado");
 		}
-		if(prod.isEmpty()) {
+		if(!prod.isPresent()) {
 			throw new RuntimeException("Produto não encontrado");
 		}
 		
@@ -73,7 +73,7 @@ public class ReceitaService {
 	private void update(Receita receita, Receita obj) {
 		Optional<Produto> prod = produtoRepository.findById(obj.getProduto().getId());
 		
-		if(prod.isEmpty()) {
+		if(!prod.isPresent()) {
 			throw new RuntimeException("Produto não encontrado");
 		}
 		

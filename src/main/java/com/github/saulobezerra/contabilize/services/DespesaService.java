@@ -37,7 +37,7 @@ public class DespesaService {
 	
 	public Despesa findById(Long id) {
 		Optional<Despesa> obj = repository.findById(id);
-		if(obj.isEmpty()) {
+		if(!obj.isPresent()) {
 			throw new RuntimeException("Despesa não encontrado");
 		}
 		
@@ -49,10 +49,10 @@ public class DespesaService {
 		Optional<Usuario> usuario = usuarioRepository.findById(obj.getUsuario().getId());
 		Optional <TipoDespesa> tipoDespesa = tipoDespesarepository.findById( obj.getTipo().getId() );
 		
-		if(usuario.isEmpty()) {
+		if(!usuario.isPresent()) {
 			throw new RuntimeException("Usuário não encontrado");
 		}
-		if(tipoDespesa.isEmpty()) {
+		if(!tipoDespesa.isPresent()) {
 			throw new RuntimeException("Tipo de despesa inexistente");
 		}
 		
@@ -83,7 +83,7 @@ public class DespesaService {
 		
 		Optional <TipoDespesa> tipoDespesa = tipoDespesarepository.findById( obj.getTipo().getId() );
 		
-		if(tipoDespesa.isEmpty()) {
+		if(!tipoDespesa.isPresent()) {
 			throw new RuntimeException("Tipo de despesa inexistente");
 		}
 		

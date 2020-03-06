@@ -21,7 +21,7 @@ public class TipoDespesaService {
 	
 	public TipoDespesa findById(Long id) {
 		Optional<TipoDespesa> obj = repository.findById(id);
-		if(obj.isEmpty()) {
+		if(!obj.isPresent()) {
 			throw new RuntimeException("Tipo de despesa não encontrado");
 		}
 		

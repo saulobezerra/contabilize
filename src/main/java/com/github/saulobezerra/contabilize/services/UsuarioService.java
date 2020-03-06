@@ -21,7 +21,7 @@ public class UsuarioService {
 	
 	public Usuario findById(Long id) {
 		Optional<Usuario> obj = repository.findById(id);
-		if(obj.isEmpty()) {
+		if(!obj.isPresent()) {
 			throw new RuntimeException("Usuario não encontrado");
 		}
 		

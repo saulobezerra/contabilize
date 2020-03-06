@@ -27,7 +27,7 @@ public class ProdutoService {
 	
 	public Produto findById(Long id) {
 		Optional<Produto> obj = repository.findById(id);
-		if(obj.isEmpty()) {
+		if(!obj.isPresent()) {
 			throw new RuntimeException("Produto não encontrado");
 		}
 		
@@ -36,7 +36,7 @@ public class ProdutoService {
 
 	public Produto insert(Produto obj) {
 		Optional<Usuario> usuario = usuarioRepository.findById(obj.getUsuario().getId());
-		if(usuario.isEmpty()) {
+		if(!usuario.isPresent()) {
 			throw new RuntimeException("Usuario não encontrado");
 		}
 		
