@@ -49,6 +49,7 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
 		Usuario obj = service.findById(id);
