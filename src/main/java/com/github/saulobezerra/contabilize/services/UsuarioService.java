@@ -62,7 +62,8 @@ public class UsuarioService {
 		if(user == null) {
 			throw new Exception("Usuário não encontrado");
 		}
-		if (!user.getSenha().equals(pe.encode(senha))) {
+		
+		if( !(pe.matches(senha, user.getSenha())) ) {
 			throw new Exception("Erro na autenticação");
 		}
 	}
