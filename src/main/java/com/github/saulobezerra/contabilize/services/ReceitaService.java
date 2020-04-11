@@ -38,7 +38,7 @@ public class ReceitaService {
 		if(!obj.isPresent()) {
 			throw new RuntimeException("Receita não encontrado");
 		}
-		
+		//return obj.orElse(null);
 		return obj.get();
 	}
 
