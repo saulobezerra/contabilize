@@ -6,17 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.github.saulobezerra.contabilize.entities.Despesa;
-import com.github.saulobezerra.contabilize.entities.TipoDespesa;
 import com.github.saulobezerra.contabilize.entities.Produto;
 import com.github.saulobezerra.contabilize.entities.Receita;
+import com.github.saulobezerra.contabilize.entities.TipoDespesa;
 import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.repositories.DespesaRepository;
-import com.github.saulobezerra.contabilize.repositories.TipoDespesaRepository;
 import com.github.saulobezerra.contabilize.repositories.ProdutoRepository;
 import com.github.saulobezerra.contabilize.repositories.ReceitaRepository;
+import com.github.saulobezerra.contabilize.repositories.TipoDespesaRepository;
 import com.github.saulobezerra.contabilize.repositories.UsuarioRepository;
 
 @Configuration
