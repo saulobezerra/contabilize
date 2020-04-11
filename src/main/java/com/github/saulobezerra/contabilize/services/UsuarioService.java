@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.github.saulobezerra.contabilize.entities.Usuario;
@@ -14,6 +15,9 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository repository;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	public List<Usuario> findAll() {
 		return repository.findAll();
@@ -30,6 +34,7 @@ public class UsuarioService {
 
 	public Usuario insert(Usuario obj) {
 		// TODO: Fazer validações dos atributos
+		obj.setNome(pe.encode(obj.getSenha()));
 		return repository.save(obj);
 	}
 
@@ -51,6 +56,15 @@ public class UsuarioService {
 
 	public Usuario findByEmailUserName(String emailUserName) {
 		return repository.findByEmailUserName(emailUserName);
+	}
+	
+	public void validaUsuario (Usuario user, String senha) throws Exception {
+		if(user == null) {
+			throw new Exception("Usuário não encontrado");
+		}
+		if (!user.getSenha().equals(pe.encode(senha))) {
+			throw new Exception("Erro na autenticação");
+		}
 	}
 }
 
