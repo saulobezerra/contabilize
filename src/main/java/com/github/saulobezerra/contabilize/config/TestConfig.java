@@ -74,6 +74,8 @@ public class TestConfig implements CommandLineRunner{
 		
 		despesaRepository.saveAll(Arrays.asList(d1,d2,d3,d4));
 		
+		// git ajustando ponteiro pra master
+		
 	}
 	
 }
