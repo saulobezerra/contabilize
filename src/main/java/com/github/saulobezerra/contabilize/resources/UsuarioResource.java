@@ -32,7 +32,12 @@ public class UsuarioResource {
 	@GetMapping (value = "login/{emailOuUserName}/{senha}")
 	public ResponseEntity<UsuarioDTO> findByUser(@PathVariable String emailOuUserName, @PathVariable String senha) throws Exception {
 		Usuario obj = service.findByEmailUserName(emailOuUserName);
-		service.validaUsuario(obj, senha);
+		if(obj == null) {
+			throw new Exception("Usuário não encontrado");
+		}
+		if (!obj.getSenha().equals(senha)) {
+			throw new Exception("Erro na autenticação");
+		}
 		UsuarioDTO userDto = new UsuarioDTO(obj);
 		return ResponseEntity.ok().body(userDto);
 	}
