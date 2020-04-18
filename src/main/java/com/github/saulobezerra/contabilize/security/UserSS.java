@@ -28,7 +28,7 @@ public class UserSS implements UserDetails {
 		return id;
 	}
 	
-	@Override
+	//@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
