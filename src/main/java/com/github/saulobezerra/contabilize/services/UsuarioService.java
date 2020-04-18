@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.repositories.UsuarioRepository;
+import com.github.saulobezerra.contabilize.security.UserSS;
+import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
 
 @Service
 public class UsuarioService {
@@ -24,6 +27,11 @@ public class UsuarioService {
 	}
 	
 	public Usuario findById(Long id) {
+		
+		UserSS user = authenticated();
+		if (user==null || !id.equals(user.getId()))
+			throw new AuthorizationException("Acesso Negado.");
+		
 		Optional<Usuario> obj = repository.findById(id);
 		if(!obj.isPresent()) {
 			throw new RuntimeException("Usuario não encontrado");
@@ -65,6 +73,15 @@ public class UsuarioService {
 		
 		if( !(pe.matches(senha, user.getSenha())) ) {
 			throw new Exception("Erro na autenticação");
+		}
+	}
+	
+	public static UserSS authenticated() {
+		try {
+			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
+		catch (Exception e) {
+			return null;
 		}
 	}
 }
