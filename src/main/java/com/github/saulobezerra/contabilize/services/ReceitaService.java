@@ -12,6 +12,8 @@ import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.repositories.ProdutoRepository;
 import com.github.saulobezerra.contabilize.repositories.ReceitaRepository;
 import com.github.saulobezerra.contabilize.repositories.UsuarioRepository;
+import com.github.saulobezerra.contabilize.security.UserSS;
+import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
 
 @Service
 public class ReceitaService {
@@ -24,6 +26,9 @@ public class ReceitaService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	public List<Receita> findAll() {
 		return repository.findAll();
@@ -92,5 +97,14 @@ public class ReceitaService {
 	
 	public List<Receita> findByMesAno(Long idUsuario, int mes, int ano) {
 		return repository.findByMesAno(idUsuario, mes, ano);
+	}
+	
+	public List<Receita> findByUsuario() {
+		UserSS user = UsuarioService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		Usuario usuario = usuarioService.findById(user.getId());
+		return repository.findByUsuario(usuario);
 	}
 }

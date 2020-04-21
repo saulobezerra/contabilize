@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.github.saulobezerra.contabilize.entities.Receita;
+import com.github.saulobezerra.contabilize.entities.Usuario;
 
 public interface ReceitaRepository extends JpaRepository<Receita, Long>{
 
@@ -18,4 +19,6 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long>{
 	
 	@Query("select r from Receita r where month(r.dataReceita) = ?2 and year(r.dataReceita) = ?3 and r.usuario.id = ?1")
 	List<Receita> findByMesAno(Long idUsuario, int mes, int ano);
+	
+	List<Receita> findByUsuario(Usuario usuario);
 }
