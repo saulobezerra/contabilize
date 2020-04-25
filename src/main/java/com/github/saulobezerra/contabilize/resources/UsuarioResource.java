@@ -19,7 +19,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.entities.dtos.UsuarioDTO;
+import com.github.saulobezerra.contabilize.security.UserSS;
 import com.github.saulobezerra.contabilize.services.UsuarioService;
+import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
 
 @RestController
 @RequestMapping(value = "/usuarios")
@@ -28,16 +30,7 @@ public class UsuarioResource {
 	@Autowired
 	private UsuarioService service;
 	
-	@CrossOrigin
-	@GetMapping (value = "login/{emailOuUserName}/{senha}")
-	public ResponseEntity<UsuarioDTO> findByUser(@PathVariable String emailOuUserName, @PathVariable String senha) throws Exception {
-		Usuario obj = service.findByEmailUserName(emailOuUserName);
-		service.validaUsuario(obj, senha);
-		UsuarioDTO userDto = new UsuarioDTO(obj);
-		return ResponseEntity.ok().body(userDto);
-	}
-	
-	@GetMapping
+	@GetMapping(value = "/all")
 	public ResponseEntity<List<UsuarioDTO>> findAll(){
 		List<Usuario> list = service.findAll();
 		List<UsuarioDTO> listDto = list.stream().map(usuario -> new UsuarioDTO(usuario)).collect(Collectors.toList());
@@ -82,6 +75,17 @@ public class UsuarioResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody Usuario obj) {
 		obj = service.update(id, obj);
+		UsuarioDTO userDto = new UsuarioDTO(obj);
+		return ResponseEntity.ok().body(userDto);
+	}
+	
+	@CrossOrigin
+	@GetMapping(value = "/usuarioLogado")
+	public ResponseEntity<UsuarioDTO> getUsuarioLogado() {
+		UserSS user = UsuarioService.authenticated();
+		if (user == null)
+			throw new AuthorizationException("Usuário não autenticado!");
+		Usuario obj = service.findById(user.getId());
 		UsuarioDTO userDto = new UsuarioDTO(obj);
 		return ResponseEntity.ok().body(userDto);
 	}

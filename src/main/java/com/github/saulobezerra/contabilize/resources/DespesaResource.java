@@ -28,17 +28,9 @@ public class DespesaResource {
 	@Autowired
 	private DespesaService service;
 	
-	@GetMapping
+	@GetMapping(value = "/all")
 	public ResponseEntity<List<DespesaDTO>> findAll(){
 		List<Despesa> list = service.findAll();
-		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-	
-	@CrossOrigin
-	@GetMapping(value = "all/usuario/{idUsuario}")
-	public ResponseEntity<List<DespesaDTO>> findByUser(@PathVariable Long idUsuario) {
-		List<Despesa> list = service.findByUser(idUsuario);
 		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
@@ -89,6 +81,14 @@ public class DespesaResource {
 	public ResponseEntity<List<DespesaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
 		List<Despesa> list = service.findByMesAno(idUsuario, mes, ano);
 		List<DespesaDTO> listDto = list.stream().map(receita -> new DespesaDTO(receita)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@CrossOrigin
+	@GetMapping
+	public ResponseEntity<List<DespesaDTO>> findByUsuario() {
+		List<Despesa> list = service.findByUsuario();
+		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 }

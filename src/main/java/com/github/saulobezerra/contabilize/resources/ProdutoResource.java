@@ -28,7 +28,7 @@ public class ProdutoResource {
 	@Autowired
 	private ProdutoService service;
 	
-	@GetMapping
+	@GetMapping(value = "/all")
 	public ResponseEntity<List<ProdutoDTO>> findAll(){
 		List<Produto> list = service.findAll();
 		List<ProdutoDTO> listDtp = list.stream().map(prod -> new ProdutoDTO(prod)).collect(Collectors.toList());
@@ -69,11 +69,11 @@ public class ProdutoResource {
 	}
 	
 	@CrossOrigin
-	@GetMapping(value = "/usuario/{idUsuario}")
-	public ResponseEntity<List<ProdutoDTO>> findByUser(@PathVariable Long idUsuario) {
-		List<Produto> list = service.findByUser(idUsuario);
-		List<ProdutoDTO> listDtp = list.stream().map(prod -> new ProdutoDTO(prod)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDtp);
+	@GetMapping
+	public ResponseEntity<List<ProdutoDTO>> findByUsuario() {
+		List<Produto> list = service.findByUsuario();
+		List<ProdutoDTO> listDto = list.stream().map(produto -> new ProdutoDTO(produto)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 }
