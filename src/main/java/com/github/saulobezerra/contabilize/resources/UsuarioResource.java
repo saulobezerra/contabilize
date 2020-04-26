@@ -37,7 +37,6 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
 		Usuario obj = service.findById(id);
@@ -45,7 +44,6 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(userDto);
 	}
 	
-	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<UsuarioDTO> insert(@RequestBody Usuario obj) throws Exception {
 		
@@ -79,7 +77,6 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(userDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/usuarioLogado")
 	public ResponseEntity<UsuarioDTO> getUsuarioLogado() {
 		UserSS user = UsuarioService.authenticated();

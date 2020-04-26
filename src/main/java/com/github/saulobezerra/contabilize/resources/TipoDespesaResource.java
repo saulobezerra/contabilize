@@ -26,14 +26,12 @@ public class TipoDespesaResource {
 	@Autowired
 	private TipoDespesaService service;
 	
-	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<TipoDespesa>> findAll(){
 		List<TipoDespesa> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TipoDespesa> findById(@PathVariable Long id) {
 		TipoDespesa obj = service.findById(id);

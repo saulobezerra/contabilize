@@ -35,7 +35,6 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/usuario/{idUsuario}")
 	public ResponseEntity<List<DespesaDTO>> findByUserAndCurrentMonth(@PathVariable Long idUsuario) {
 		List<Despesa> list = service.findByUserAndCurrentMonth(idUsuario);
@@ -43,7 +42,6 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<DespesaDTO> findById(@PathVariable Long id) {
 		Despesa obj = service.findById(id);
@@ -51,7 +49,6 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(despesaDto);
 	}
 	
-	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<DespesaDTO> insert(@RequestBody Despesa obj) {
 		obj = service.insert(obj);
@@ -61,14 +58,12 @@ public class DespesaResource {
 		return ResponseEntity.created(uri).body(despesaDto);
 	}
 	
-	@CrossOrigin
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<DespesaDTO> update(@PathVariable Long id, @RequestBody DespesaDTO objDto) {
 		Despesa despesa = service.update(id, objDto);
@@ -76,7 +71,6 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(despesaDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/usuario/{idUsuario}/mes_ano/{mes}/{ano}")
 	public ResponseEntity<List<DespesaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
 		List<Despesa> list = service.findByMesAno(idUsuario, mes, ano);
@@ -84,7 +78,6 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<DespesaDTO>> findByUsuario() {
 		List<Despesa> list = service.findByUsuario();

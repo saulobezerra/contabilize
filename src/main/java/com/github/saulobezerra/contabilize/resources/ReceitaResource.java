@@ -35,15 +35,6 @@ public class ReceitaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
-	@GetMapping(value = "/all/usuario/{idUsuario}")
-	public ResponseEntity<List<ReceitaDTO>> findByUser(@PathVariable Long idUsuario) {
-		List<Receita> list = service.findByUser(idUsuario);
-		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-	
-	@CrossOrigin
 	@GetMapping(value = "/usuario/{idUsuario}")
 	public ResponseEntity<List<ReceitaDTO>> findByUserAndCurrentMonth(@PathVariable Long idUsuario) {
 		List<Receita> list = service.findByUserAndCurrentMonth(idUsuario);
@@ -51,7 +42,6 @@ public class ReceitaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ReceitaDTO> findById(@PathVariable Long id) {
 		Receita obj = service.findById(id);
@@ -59,7 +49,6 @@ public class ReceitaResource {
 		return ResponseEntity.ok().body(receitaDto);
 	}
 	
-	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<ReceitaDTO> insert(@RequestBody Receita obj) {
 		obj = service.insert(obj);
@@ -69,14 +58,12 @@ public class ReceitaResource {
 		return ResponseEntity.created(uri).body(receitaDto);
 	}
 	
-	@CrossOrigin
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ReceitaDTO> update(@PathVariable Long id, @RequestBody Receita obj) {
 		obj = service.update(id, obj);
@@ -84,7 +71,6 @@ public class ReceitaResource {
 		return ResponseEntity.ok().body(receitaDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/usuario/{idUsuario}/mes_ano/{mes}/{ano}")
 	public ResponseEntity<List<ReceitaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
 		List<Receita> list = service.findByMesAno(idUsuario, mes, ano);
@@ -92,7 +78,6 @@ public class ReceitaResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<ReceitaDTO>> findByUsuario() {
 		List<Receita> list = service.findByUsuario();

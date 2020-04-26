@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.saulobezerra.contabilize.entities.Produto;
-import com.github.saulobezerra.contabilize.entities.Receita;
 import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.entities.dtos.ProdutoDTO;
 import com.github.saulobezerra.contabilize.repositories.ProdutoRepository;
