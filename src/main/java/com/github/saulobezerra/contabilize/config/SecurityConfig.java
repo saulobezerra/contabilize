@@ -46,6 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/lucros/**",
 			"/tiposDespesa/**"
 	};
+	
+	private static final String[] PUBLIC_MATCHERS_POST = {
+			"/usuarios/**"
+	};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -58,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
+			.antMatchers(PUBLIC_MATCHERS_POST).permitAll()
 			.anyRequest().authenticated();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));

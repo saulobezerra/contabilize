@@ -42,7 +42,7 @@ public class UsuarioService {
 
 	public Usuario insert(Usuario obj) {
 		// TODO: Fazer validações dos atributos
-		obj.setNome(pe.encode(obj.getSenha()));
+		obj.setSenha(pe.encode(obj.getSenha()));
 		return repository.save(obj);
 	}
 

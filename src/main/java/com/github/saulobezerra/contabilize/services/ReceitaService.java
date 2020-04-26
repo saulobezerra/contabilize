@@ -27,9 +27,6 @@ public class ReceitaService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	@Autowired
-	private UsuarioService usuarioService;
-	
 	public List<Receita> findAll() {
 		return repository.findAll();
 	}
@@ -90,13 +87,13 @@ public class ReceitaService {
 		receita.setDataReceita(obj.getDataReceita());
 		receita.setIsPago(obj.getIsPago());
 	}
-
-	public List<Receita> findByUserAndCurrentMonth(Long idUsuario) {
-		return repository.findByUserAndCurrentMonth(idUsuario);
-	}
 	
-	public List<Receita> findByMesAno(Long idUsuario, int mes, int ano) {
-		return repository.findByMesAno(idUsuario, mes, ano);
+	public List<Receita> findByMesAno(int mes, int ano) {
+		UserSS user = UsuarioService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		return repository.findByMesAno(user.getId(), mes, ano);
 	}
 	
 	public List<Receita> findByUsuario() {
@@ -104,7 +101,6 @@ public class ReceitaService {
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
-		Usuario usuario = usuarioService.findById(user.getId());
-		return repository.findByUsuario(usuario);
+		return repository.findByUserAndCurrentMonth(user.getId());
 	}
 }

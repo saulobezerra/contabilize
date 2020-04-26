@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +30,6 @@ public class DespesaResource {
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<DespesaDTO>> findAll(){
 		List<Despesa> list = service.findAll();
-		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-	
-	@GetMapping(value = "/usuario/{idUsuario}")
-	public ResponseEntity<List<DespesaDTO>> findByUserAndCurrentMonth(@PathVariable Long idUsuario) {
-		List<Despesa> list = service.findByUserAndCurrentMonth(idUsuario);
 		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
@@ -71,9 +63,9 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(despesaDto);
 	}
 	
-	@GetMapping(value = "/usuario/{idUsuario}/mes_ano/{mes}/{ano}")
-	public ResponseEntity<List<DespesaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
-		List<Despesa> list = service.findByMesAno(idUsuario, mes, ano);
+	@GetMapping(value = "/mes_ano/{mes}/{ano}")
+	public ResponseEntity<List<DespesaDTO>> findByMesAno(@PathVariable int mes, @PathVariable int ano){
+		List<Despesa> list = service.findByMesAno(mes, ano);
 		List<DespesaDTO> listDto = list.stream().map(receita -> new DespesaDTO(receita)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}

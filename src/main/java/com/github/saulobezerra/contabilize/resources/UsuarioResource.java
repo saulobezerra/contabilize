@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +21,7 @@ import com.github.saulobezerra.contabilize.entities.dtos.UsuarioDTO;
 import com.github.saulobezerra.contabilize.security.UserSS;
 import com.github.saulobezerra.contabilize.services.UsuarioService;
 import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
+import com.github.saulobezerra.contabilize.services.exceptions.ObjectNotFoundException;
 
 @RestController
 @RequestMapping(value = "/usuarios")
@@ -37,24 +37,17 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
-		Usuario obj = service.findById(id);
-		UsuarioDTO userDto = new UsuarioDTO(obj);
-		return ResponseEntity.ok().body(userDto);
-	}
-	
 	@PostMapping
-	public ResponseEntity<UsuarioDTO> insert(@RequestBody Usuario obj) throws Exception {
+	public ResponseEntity<UsuarioDTO> insert(@RequestBody Usuario obj) {
 		
 		Usuario user = service.findByEmailUserName(obj.getEmail());
 		if(user != null) {
-			throw new Exception("Endereço de e-mail já utilizado");
+			throw new ObjectNotFoundException("Endereço de e-mail já utilizado");
 		}
 		
 		user = service.findByEmailUserName(obj.getUserName());
 		if(user != null) {
-			throw new Exception("UserName já utilizado");
+			throw new ObjectNotFoundException("UserName já utilizado");
 		}
 		
 		obj = service.insert(obj);

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.saulobezerra.contabilize.entities.Despesa;
-import com.github.saulobezerra.contabilize.entities.Receita;
 import com.github.saulobezerra.contabilize.entities.TipoDespesa;
 import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.entities.dtos.DespesaDTO;
@@ -28,10 +27,7 @@ public class DespesaService {
 	private TipoDespesaRepository tipoDespesarepository;
 
 	@Autowired
-	private UsuarioRepository usuarioRepository; //usuarioService
-	
-	@Autowired
-	private UsuarioService usuarioService;
+	private UsuarioRepository usuarioRepository; 
 	
 	public List<Despesa> findAll() {
 		return repository.findAll();
@@ -97,13 +93,13 @@ public class DespesaService {
 		despesa.setValorUnitario(obj.getValorUnitario());
 		despesa.setValor(obj.getQtde_insumo() * obj.getValorUnitario());
 	}
-
-	public List<Despesa> findByUserAndCurrentMonth(Long idUsuario) {
-		return repository.findByUserAndCurrentMonth(idUsuario);
-	}
 	
-	public List<Despesa> findByMesAno(Long idUsuario, int mes, int ano) {
-		return repository.findByMesAno(idUsuario, mes, ano);
+	public List<Despesa> findByMesAno(int mes, int ano) {
+		UserSS user = UsuarioService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		return repository.findByMesAno(user.getId(), mes, ano);
 	}
 	
 	public List<Despesa> findByUsuario() {
@@ -111,7 +107,6 @@ public class DespesaService {
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
-		Usuario usuario = usuarioService.findById(user.getId());
-		return repository.findByUsuario(usuario);
+		return repository.findByUserAndCurrentMonth(user.getId());
 	}
 }
