@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -63,8 +64,11 @@ public class ReceitaResource {
 		return ResponseEntity.ok().body(receitaDto);
 	}
 	
-	@GetMapping(value = "/mes_ano/{mes}/{ano}")
-	public ResponseEntity<List<ReceitaDTO>> findByMesAno(@PathVariable int mes, @PathVariable int ano){
+	@GetMapping(value = "/periodo")
+	public ResponseEntity<List<ReceitaDTO>> findByPeriodo(
+			@RequestParam(value = "mes") int mes,
+			@RequestParam(value = "ano") int ano
+			){
 		List<Receita> list = service.findByMesAno(mes, ano);
 		List<ReceitaDTO> listDto = list.stream().map(receita -> new ReceitaDTO(receita)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
