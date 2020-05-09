@@ -17,5 +17,5 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long>{
 	@Query("select d from Despesa d where month(d.data) = ?2 and year(d.data) = ?3 and d.usuario.id = ?1")
 	List<Despesa> findByMesAno(Long idUsuario, int mes, int ano);
 	
-	List<Despesa> findByUsuario(Usuario usuario);
+	List<Despesa> findByUsuarioOrderByIdDesc(Usuario usuario);
 }

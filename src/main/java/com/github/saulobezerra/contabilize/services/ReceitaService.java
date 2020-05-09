@@ -101,6 +101,6 @@ public class ReceitaService {
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
-		return repository.findByUserAndCurrentMonth(user.getId());
+		return repository.findByUsuarioOrderByIdDesc(usuarioRepository.findById(user.getId()).get());
 	}
 }
