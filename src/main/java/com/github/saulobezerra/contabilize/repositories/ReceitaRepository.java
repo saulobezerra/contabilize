@@ -14,7 +14,7 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long>{
 	List<Receita> findByUser(Long idUsuario);
 	
 	@Query("select r from Receita r where MONTH(r.dataReceita) = MONTH(CURRENT_DATE())\r\n" + 
-			"AND YEAR(r.dataReceita) = YEAR(CURRENT_DATE()) AND r.usuario.id = ?1")
+			"AND YEAR(r.dataReceita) = YEAR(CURRENT_DATE()) AND r.usuario.id = ?1 ORDER BY id DESC")
 	List<Receita> findByUserAndCurrentMonth(Long idUsuario);
 	
 	@Query("select r from Receita r where month(r.dataReceita) = ?2 and year(r.dataReceita) = ?3 and r.usuario.id = ?1")
