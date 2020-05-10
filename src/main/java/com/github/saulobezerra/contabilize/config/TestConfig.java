@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.github.saulobezerra.contabilize.entities.Despesa;
 import com.github.saulobezerra.contabilize.entities.Produto;
@@ -37,15 +36,12 @@ public class TestConfig implements CommandLineRunner{
 	
 	@Autowired
 	private DespesaRepository despesaRepository;
-	
-	@Autowired
-	private BCryptPasswordEncoder pe;
 
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Usuario u1 = new Usuario(null, "saulo", "saulo@email", "sauloalves", pe.encode("MTIzNDU2"));
-		Usuario u2 = new Usuario(null, "dayana ", "dayana@email", "dayanamoura", pe.encode("MTIzNDU2"));
+		Usuario u1 = new Usuario(null, "saulo", "saulo@email", "sauloalves", "MTIzNDU2");
+		Usuario u2 = new Usuario(null, "dayana ", "dayana@email", "dayanamoura", "MTIzNDU2");
 		usuarioRepository.saveAll(Arrays.asList(u1, u2));
 		
 		Produto p1 = new Produto(null, "Bolo fofo", 8.00, u1);
@@ -73,7 +69,6 @@ public class TestConfig implements CommandLineRunner{
 		Despesa d4 = new Despesa(null, i1, "Ovo", 2.00, 9.00, "Todo Dia", u2);
 		
 		despesaRepository.saveAll(Arrays.asList(d1,d2,d3,d4));
-		
 	}
 	
 }
