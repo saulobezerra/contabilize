@@ -14,6 +14,8 @@ import com.github.saulobezerra.contabilize.entities.dtos.DespesaDTO;
 import com.github.saulobezerra.contabilize.repositories.DespesaRepository;
 import com.github.saulobezerra.contabilize.repositories.TipoDespesaRepository;
 import com.github.saulobezerra.contabilize.repositories.UsuarioRepository;
+import com.github.saulobezerra.contabilize.security.UserSS;
+import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
 
 @Service
 public class DespesaService {
@@ -25,14 +27,10 @@ public class DespesaService {
 	private TipoDespesaRepository tipoDespesarepository;
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioRepository usuarioRepository; 
 	
 	public List<Despesa> findAll() {
 		return repository.findAll();
-	}
-	
-	public List<Despesa> findByUser(Long id) {
-		return repository.findByUser(id);
 	}
 	
 	public Despesa findById(Long id) {
@@ -95,12 +93,19 @@ public class DespesaService {
 		despesa.setValorUnitario(obj.getValorUnitario());
 		despesa.setValor(obj.getQtde_insumo() * obj.getValorUnitario());
 	}
-
-	public List<Despesa> findByUserAndCurrentMonth(Long idUsuario) {
-		return repository.findByUserAndCurrentMonth(idUsuario);
+	
+	public List<Despesa> findByMesAno(int mes, int ano) {
+		UserSS user = UsuarioService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		return repository.findByMesAno(user.getId(), mes, ano);
 	}
 	
-	public List<Despesa> findByMesAno(Long idUsuario, int mes, int ano) {
-		return repository.findByMesAno(idUsuario, mes, ano);
-	}
+	public List<Despesa> findByUsuario() {
+		UserSS user = UsuarioService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		return repository.findByUserAndCurrentMonth(user.getId());	}
 }

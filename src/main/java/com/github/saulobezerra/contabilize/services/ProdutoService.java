@@ -11,6 +11,8 @@ import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.entities.dtos.ProdutoDTO;
 import com.github.saulobezerra.contabilize.repositories.ProdutoRepository;
 import com.github.saulobezerra.contabilize.repositories.UsuarioRepository;
+import com.github.saulobezerra.contabilize.security.UserSS;
+import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
 
 @Service
 public class ProdutoService {
@@ -20,6 +22,9 @@ public class ProdutoService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	public List<Produto> findAll() {
 		return repository.findAll();
@@ -59,7 +64,12 @@ public class ProdutoService {
 		prod.setValor(obj.getValor());
 	}
 	
-	public List<Produto> findByUser(Long idUser) {
-		return repository.findByUser(idUser);
+	public List<Produto> findByUsuario() {
+		UserSS user = UsuarioService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		Usuario usuario = usuarioService.findById(user.getId());
+		return repository.findByUsuario(usuario);
 	}
 }

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,14 +27,13 @@ public class ProdutoResource {
 	@Autowired
 	private ProdutoService service;
 	
-	@GetMapping
+	@GetMapping(value = "/all")
 	public ResponseEntity<List<ProdutoDTO>> findAll(){
 		List<Produto> list = service.findAll();
 		List<ProdutoDTO> listDtp = list.stream().map(prod -> new ProdutoDTO(prod)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDtp);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProdutoDTO> findById(@PathVariable Long id) {
 		Produto obj = service.findById(id);
@@ -43,7 +41,6 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(prodDto);
 	}
 	
-	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<ProdutoDTO> insert(@RequestBody Produto obj) {
 		obj = service.insert(obj);
@@ -53,14 +50,12 @@ public class ProdutoResource {
 		return ResponseEntity.created(uri).body(prodDto);
 	}
 	
-	@CrossOrigin
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @RequestBody ProdutoDTO obj) {
 		Produto prod = service.update(id, obj);
@@ -68,12 +63,11 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@CrossOrigin
-	@GetMapping(value = "/usuario/{idUsuario}")
-	public ResponseEntity<List<ProdutoDTO>> findByUser(@PathVariable Long idUsuario) {
-		List<Produto> list = service.findByUser(idUsuario);
-		List<ProdutoDTO> listDtp = list.stream().map(prod -> new ProdutoDTO(prod)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDtp);
+	@GetMapping
+	public ResponseEntity<List<ProdutoDTO>> findByUsuario() {
+		List<Produto> list = service.findByUsuario();
+		List<ProdutoDTO> listDto = list.stream().map(produto -> new ProdutoDTO(produto)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 }

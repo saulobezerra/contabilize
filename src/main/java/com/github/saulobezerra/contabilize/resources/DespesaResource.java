@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,30 +28,13 @@ public class DespesaResource {
 	@Autowired
 	private DespesaService service;
 	
-	@GetMapping
+	@GetMapping(value = "/all")
 	public ResponseEntity<List<DespesaDTO>> findAll(){
 		List<Despesa> list = service.findAll();
 		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@CrossOrigin
-	@GetMapping(value = "all/usuario/{idUsuario}")
-	public ResponseEntity<List<DespesaDTO>> findByUser(@PathVariable Long idUsuario) {
-		List<Despesa> list = service.findByUser(idUsuario);
-		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-	
-	@CrossOrigin
-	@GetMapping(value = "/usuario/{idUsuario}")
-	public ResponseEntity<List<DespesaDTO>> findByUserAndCurrentMonth(@PathVariable Long idUsuario) {
-		List<Despesa> list = service.findByUserAndCurrentMonth(idUsuario);
-		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-	
-	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<DespesaDTO> findById(@PathVariable Long id) {
 		Despesa obj = service.findById(id);
@@ -59,7 +42,6 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(despesaDto);
 	}
 	
-	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<DespesaDTO> insert(@RequestBody Despesa obj) {
 		obj = service.insert(obj);
@@ -69,14 +51,12 @@ public class DespesaResource {
 		return ResponseEntity.created(uri).body(despesaDto);
 	}
 	
-	@CrossOrigin
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<DespesaDTO> update(@PathVariable Long id, @RequestBody DespesaDTO objDto) {
 		Despesa despesa = service.update(id, objDto);
@@ -84,11 +64,20 @@ public class DespesaResource {
 		return ResponseEntity.ok().body(despesaDto);
 	}
 	
-	@CrossOrigin
-	@GetMapping(value = "/usuario/{idUsuario}/mes_ano/{mes}/{ano}")
-	public ResponseEntity<List<DespesaDTO>> findByMesAno(@PathVariable Long idUsuario, @PathVariable int mes, @PathVariable int ano){
-		List<Despesa> list = service.findByMesAno(idUsuario, mes, ano);
-		List<DespesaDTO> listDto = list.stream().map(receita -> new DespesaDTO(receita)).collect(Collectors.toList());
+	@GetMapping(value = "/periodo")
+	public ResponseEntity<List<DespesaDTO>> findByPeriodo(
+			@RequestParam(value = "mes") int mes,
+			@RequestParam(value = "ano") int ano
+			){
+		List<Despesa> list = service.findByMesAno(mes, ano);
+		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<DespesaDTO>> findByUsuario() {
+		List<Despesa> list = service.findByUsuario();
+		List<DespesaDTO> listDto = list.stream().map(despesa -> new DespesaDTO(despesa)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 }

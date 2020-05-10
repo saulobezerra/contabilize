@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,14 +25,12 @@ public class TipoDespesaResource {
 	@Autowired
 	private TipoDespesaService service;
 	
-	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<TipoDespesa>> findAll(){
 		List<TipoDespesa> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TipoDespesa> findById(@PathVariable Long id) {
 		TipoDespesa obj = service.findById(id);
