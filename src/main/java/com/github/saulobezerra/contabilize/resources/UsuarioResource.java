@@ -21,7 +21,6 @@ import com.github.saulobezerra.contabilize.entities.dtos.UsuarioDTO;
 import com.github.saulobezerra.contabilize.security.UserSS;
 import com.github.saulobezerra.contabilize.services.UsuarioService;
 import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
-import com.github.saulobezerra.contabilize.services.exceptions.ObjectNotFoundException;
 
 @RestController
 @RequestMapping(value = "/usuarios")
@@ -39,17 +38,6 @@ public class UsuarioResource {
 	
 	@PostMapping
 	public ResponseEntity<UsuarioDTO> insert(@RequestBody Usuario obj) {
-		
-		Usuario user = service.findByEmailUserName(obj.getEmail());
-		if(user != null) {
-			throw new ObjectNotFoundException("Endereço de e-mail já utilizado");
-		}
-		
-		user = service.findByEmailUserName(obj.getUserName());
-		if(user != null) {
-			throw new ObjectNotFoundException("UserName já utilizado");
-		}
-		
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
 				buildAndExpand(obj.getId()).toUri();

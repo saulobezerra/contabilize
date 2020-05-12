@@ -12,6 +12,7 @@ import com.github.saulobezerra.contabilize.entities.Usuario;
 import com.github.saulobezerra.contabilize.repositories.UsuarioRepository;
 import com.github.saulobezerra.contabilize.security.UserSS;
 import com.github.saulobezerra.contabilize.services.exceptions.AuthorizationException;
+import com.github.saulobezerra.contabilize.services.exceptions.ObjectConflictedException;
 
 @Service
 public class UsuarioService {
@@ -39,9 +40,28 @@ public class UsuarioService {
 		
 		return obj.get();
 	}
+	
+	public Usuario findByEmail(String email) {
+		Usuario obj = repository.findByEmail(email);
+		return obj;
+	}
+	
+	public Usuario findByUserName(String userName) {
+		Usuario obj = repository.findByUserName(userName);
+		return obj;
+	}
 
 	public Usuario insert(Usuario obj) {
-		// TODO: Fazer validações dos atributos
+		Usuario user = repository.findByEmail(obj.getEmail());
+		if(user != null) {
+			throw new ObjectConflictedException("Endereço de e-mail já utilizado.");
+		}
+		
+		user = repository.findByUserName(obj.getUserName());
+		if(user != null) {
+			throw new ObjectConflictedException("UserName não disponível.");
+		}
+		
 		obj.setSenha(pe.encode(obj.getSenha()));
 		return repository.save(obj);
 	}
@@ -51,21 +71,28 @@ public class UsuarioService {
 	}
 
 	public Usuario update(Long id, Usuario obj) {
-		Usuario usuario = repository.getOne(id);
+		Usuario user = repository.findByEmail(obj.getEmail());
+		Usuario usuario = findById(id);
+		
+		if(user != null && !usuario.getEmail().equals(user.getEmail())) {
+			throw new ObjectConflictedException("Esse email não pode ser utilizado!");
+		}
+		user = repository.findByUserName(obj.getUserName());
+		
+		if(user != null && !usuario.getUserName().equals(user.getUserName())) {
+			throw new ObjectConflictedException("Esse User Name não pode ser utilizado!");
+		}
+		
 		updateData(usuario, obj);
 		return repository.save(usuario);
 	}
 
 	private void updateData(Usuario usuario, Usuario obj) {
-		usuario.setEmail(obj.getEmail()); // TODO: Verificar se ja existe e-mail cadastrado
+		usuario.setEmail(obj.getEmail());
 		usuario.setNome(obj.getNome()); 
-		usuario.setUserName(obj.getUserName()); // TODO: Verificar se ja existe o userName cadastrado
+		usuario.setUserName(obj.getUserName());
 	}
 
-	public Usuario findByEmailUserName(String emailUserName) {
-		return repository.findByEmailUserName(emailUserName);
-	}
-	
 	public void validaUsuario (Usuario user, String senha) throws Exception {
 		if(user == null) {
 			throw new Exception("Usuário não encontrado");
