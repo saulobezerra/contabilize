@@ -41,7 +41,7 @@ public class UsuarioService {
 		return obj.get();
 	}
 	
-	public Usuario findByEmail(String email) {
+	public Usuario findByEmail(String email) { 
 		Usuario obj = repository.findByEmail(email);
 		return obj;
 	}

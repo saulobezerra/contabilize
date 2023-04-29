@@ -48,6 +48,11 @@ public class Receita implements Serializable{
 		this.usuario = usuario;
 		this.valor = qtdeProduto * produto.getValor();
 	}
+	
+	public static void main(String[] args) {
+		new Receita().getId();
+	}
+
 
 	public Usuario getUsuario() {
 		return usuario;
